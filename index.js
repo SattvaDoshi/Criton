@@ -30,6 +30,9 @@ app.use(
   })
 );
 
+app.get('/',(req,res)=>{
+  res.send('Hello World')
+})
 app.use('/api', tenantRoutes);
 app.use('/settings',settingRoutes);
 
