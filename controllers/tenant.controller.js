@@ -119,7 +119,7 @@ const loginTenant = async (req, res) => {
       }
 
       // Step 9: Respond with a success message
-      res.status(200).json({ message: 'Login successful', tenantId });
+      res.status(200).json({ message: 'Login successful', tenantId, token });
     });
 
   } catch (error) {

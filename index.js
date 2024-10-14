@@ -5,6 +5,7 @@ import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import tenantRoutes from './routes/tanent.routes.js';
 import settingRoutes from './routes/setting.routes.js';
+import photoRoutes from './routes/photo.routes.js';
 import morgan from 'morgan';
 
 dotenv.config();
@@ -35,6 +36,7 @@ app.get('/',(req,res)=>{
 })
 app.use('/api', tenantRoutes);
 app.use('/settings',settingRoutes);
+app.use('/photos',photoRoutes);
 
 
 const PORT = process.env.PORT || 3000;
