@@ -1,8 +1,8 @@
 import { getUserModel } from '../models/user.model.js';
 import { getSettingModel } from '../models/setting.model.js';
-import { connectToTenantDB } from '../utils/dbConnection.js';
-import jwt from 'jsonwebtoken';
+import { connectToTenantDB } from '../config/dbConnection.js';
 import { initializeUserSettings, settingsValidation } from '../utils/helper.js';
+import jwt from 'jsonwebtoken';
 
 
 const getUserSettings = async (req, res) => {

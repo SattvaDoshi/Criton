@@ -6,13 +6,23 @@ const photoSchema = new mongoose.Schema({
     ref: 'User', 
     required: true 
   },
-  url: { 
+  photoUrl1: { 
     type: String, 
+    required: true,
     validate: {
       validator: function(v) {
-        return /^https?:\/\/\S+/.test(v); // Ensures the URL starts with http or https
+        return /^https?:\/\/\S+/.test(v);
       },
-      message: 'Invalid URL format'
+      message: 'Invalid URL format for photoUrl1'
+    }
+  },
+  photoUrl2: { 
+    type: String,
+    validate: {
+      validator: function(v) {
+        return v === null || /^https?:\/\/\S+/.test(v);
+      },
+      message: 'Invalid URL format for photoUrl2'
     }
   },
   title: { 
@@ -20,15 +30,15 @@ const photoSchema = new mongoose.Schema({
   },
   description: { 
     type: String,
-    maxlength: 500 // Limiting description length to 500 characters
+    maxlength: 500
   },
   product_type: { 
     type: String,
-    maxlength: 100 // Optional, with a limit to avoid overly long entries
+    maxlength: 100
   },
   sku_code: { 
     type: String,
-    maxlength: 50 // SKU code length capped for consistency
+    maxlength: 50
   },
   resolution: { 
     type: String 
@@ -48,4 +58,4 @@ const photoSchema = new mongoose.Schema({
   }
 });
 
-export const getPhotoModel = (connection) => connection.model('Photo', photoSchema)
+export const getPhotoModel = (connection) => connection.model('Photo', photoSchema);

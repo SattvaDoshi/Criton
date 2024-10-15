@@ -1,9 +1,10 @@
-import { Router } from "express";
-import { addPhoto, deletePhoto, getPhoto } from "../controllers/photo.controller.js";
+import express from 'express';
+import { uploadPhotos, handleUploadError } from '../middlewares/upload.middleware.js';
+import { addPhoto, deletePhoto, getPhoto } from '../controllers/photo.controller.js';
 
-const router = Router();
+const router = express.Router();
 
-router.post('/addPhoto',addPhoto);
+router.post('/upload', uploadPhotos, addPhoto, handleUploadError);
 router.get('/getPhoto',getPhoto);
 router.delete('/deletePhoto',deletePhoto);
 

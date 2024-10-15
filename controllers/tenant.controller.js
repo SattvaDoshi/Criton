@@ -1,5 +1,5 @@
 import { Tenant } from "../models/tenant.model.js";
-import { connectToTenantDB } from "../utils/dbConnection.js";
+import { connectToTenantDB } from "../config/dbConnection.js";
 import { getUserModel } from "../models/user.model.js";
 import { v4 as uuidv4 } from 'uuid';
 import bcrypt from 'bcryptjs';

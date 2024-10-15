@@ -1,7 +1,7 @@
 import { getSettingModel } from "../models/setting.model.js";
 import { Tenant } from "../models/tenant.model.js";
 import { getUserModel } from "../models/user.model.js";
-import { connectToTenantDB } from "./dbConnection.js";
+import { connectToTenantDB } from "../config/dbConnection.js";
 
 const emailExistsInTenants = async (email) => {
   try {
