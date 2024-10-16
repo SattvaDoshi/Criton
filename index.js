@@ -6,6 +6,8 @@ import MongoStore from 'connect-mongo';
 import tenantRoutes from './routes/tanent.routes.js';
 import settingRoutes from './routes/setting.routes.js';
 import photoRoutes from './routes/photo.routes.js';
+import albumRoutes from './routes/album.routes.js';
+import cors from 'cors';
 import morgan from 'morgan';
 
 dotenv.config();
@@ -13,6 +15,8 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 app.use(morgan("dev"));
+app.use(express.urlencoded({ extended: true }));
+app.use(cors());
 
 app.use(
   session({
@@ -37,6 +41,7 @@ app.get('/',(req,res)=>{
 app.use('/api', tenantRoutes);
 app.use('/settings',settingRoutes);
 app.use('/photos',photoRoutes);
+app.use('/albums',albumRoutes);
 
 
 const PORT = process.env.PORT || 3000;

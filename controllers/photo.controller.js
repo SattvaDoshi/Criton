@@ -109,6 +109,41 @@ const getPhoto = async (req, res) => {
   }
 };
 
+const getPhotos = async (req, res) => {
+  try {
+    // Step 1: Ensure the user is authenticated
+    if (!req.session || !req.session.token || !req.session.tenantId) {
+      return res.status(401).json({ message: 'Unauthorized. Please log in.' });
+    }
+
+    const { tenantId } = req.session;
+
+    // Step 2: Connect to the tenant's specific database
+    const tenantConnection = await connectToTenantDB(tenantId);
+    const Photo = getPhotoModel(tenantConnection);
+
+    // Step 3: Decode the JWT token to get the userId
+    const decodedToken = jwt.verify(req.session.token, process.env.JWT_SECRET);
+    const userId = decodedToken.userId;
+
+    // Step 4: Find the photos in the database
+    const photos = await Photo.find({ userId });
+
+    // Step 5: Send the response
+    res.status(200).json({
+      message: 'Photos retrieved successfully',
+      photos
+    });
+
+  } catch (error) {
+    console.error('Error in getPhotos:', error);
+    if (error.name === 'JsonWebTokenError') {
+      return res.status(401).json({ message: 'Invalid token. Please log in again.' });
+    }
+    res.status(500).json({ message: 'Server error', error: error.message });
+  }
+};
+
 const deletePhoto = async (req, res) => {
   try {
     // Step 1: Ensure the user is authenticated
@@ -154,5 +189,6 @@ const deletePhoto = async (req, res) => {
 export {
   addPhoto,
   getPhoto,
-  deletePhoto
+  deletePhoto,
+  getPhotos
 };
