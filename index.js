@@ -16,7 +16,15 @@ const app = express();
 app.use(express.json());
 app.use(morgan("dev"));
 app.use(express.urlencoded({ extended: true }));
-app.use(cors());
+
+const corsOptions = {
+  origin: 'http://localhost:3000', // Change to the specific origin you want to allow
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Specify allowed methods
+  credentials: true, // Allow cookies if needed
+};
+
+app.use(cors(corsOptions));
+
 
 app.use(
   session({
