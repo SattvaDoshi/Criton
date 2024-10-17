@@ -19,6 +19,9 @@ const addPhoto = async (req, res) => {
     const decodedToken = jwt.verify(req.session.token, process.env.JWT_SECRET);
     const userId = decodedToken.userId;
 
+    // Store userId in session for Multer to use
+    req.session.userId = userId;
+
     // Step 4: Check if files are uploaded
     if (!req.files || (!req.files['photoUrl1'] && !req.files['photoUrl2'])) {
       return res.status(400).json({ message: 'No files uploaded' });

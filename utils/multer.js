@@ -5,10 +5,19 @@ import path from 'path';
 
 const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
-  params: {
-    folder: 'product_photos',
-    allowed_formats: ['jpg', 'jpeg', 'png', 'gif'],
-    transformation: [{ width: 1000, height: 1000, crop: 'limit' }]
+  params: async (req, file) => {
+    // Ensure that tenantId and userId are available in the request
+    if (!req.session || !req.session.tenantId ) {
+      throw new Error('Unauthorized: Missing tenant or user information');
+    }
+
+    const { tenantId } = req.session;
+    
+    return {
+      folder: `tenants/${tenantId}`,
+      allowed_formats: ['jpg', 'jpeg', 'png', 'gif'],
+      transformation: [{ width: 1000, height: 1000, crop: 'limit' }]
+    };
   }
 });
 

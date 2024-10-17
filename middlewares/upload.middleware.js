@@ -1,4 +1,5 @@
 import upload from '../utils/multer.js';
+import multer from 'multer';
 
 export const uploadPhotos = upload.fields([
   { name: 'photoUrl1', maxCount: 1 },
@@ -15,6 +16,10 @@ export const handleUploadError = (err, req, res, next) => {
   
   if (err.message === 'Error: Images Only!') {
     return res.status(400).json({ message: 'Only image files are allowed.' });
+  }
+
+  if (err.message === 'Unauthorized: Missing tenant or user information') {
+    return res.status(401).json({ message: 'Unauthorized: Missing tenant or user information' });
   }
 
   console.error('Unexpected error in file upload:', err);
