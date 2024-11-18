@@ -4,9 +4,9 @@ import { addPhoto, deletePhoto, getPhoto, getPhotos } from '../controllers/photo
 
 const router = express.Router();
 
-router.post('/upload', uploadPhotos, addPhoto, handleUploadError);
-router.get('/getPhoto',getPhoto);
-router.delete('/deletePhoto',deletePhoto);
-router.get('/allPhotos',getPhotos);
+router.post('/upload/:tenantId', uploadPhotos, addPhoto, handleUploadError);
+router.get('/getPhoto/:tenantId/:photoId',getPhoto);
+router.delete('/deletePhoto/:tenantId',deletePhoto);
+router.get('/allPhotos/:tenantId',getPhotos);
 
 export default router

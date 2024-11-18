@@ -7,11 +7,8 @@ import { getPhotoModel } from '../models/photo.model.js';
 const createAlbum = async (req, res) => {
   try {
     // Step 1: Ensure the user is authenticated
-    if (!req.session || !req.session.token || !req.session.tenantId) {
-      return res.status(401).json({ message: 'Unauthorized. Please log in.' });
-    }
 
-    const { tenantId } = req.session;
+    const { tenantId } = req.params;
 
     // Step 2: Connect to the tenant's specific database
     const tenantConnection = await connectToTenantDB(tenantId);
@@ -53,11 +50,8 @@ const createAlbum = async (req, res) => {
 const getAlbums = async (req, res) => {
   try {
     // Step 1: Ensure the user is authenticated
-    if (!req.session || !req.session.token || !req.session.tenantId) {
-      return res.status(401).json({ message: 'Unauthorized. Please log in.' });
-    }
-
-    const { tenantId } = req.session;
+  
+    const { tenantId } = req.params;
 
     // Step 2: Connect to the tenant's specific database
     const tenantConnection = await connectToTenantDB(tenantId);
@@ -88,11 +82,8 @@ const getAlbums = async (req, res) => {
 const deleteAlbum = async (req, res) => {
   try {
     // Step 1: Ensure the user is authenticated
-    if (!req.session || !req.session.token || !req.session.tenantId) {
-      return res.status(401).json({ message: 'Unauthorized. Please log in.' });
-    }
-
-    const { tenantId } = req.session;
+   
+    const { tenantId } = req.params;
 
     // Step 2: Connect to the tenant's specific database
     const tenantConnection = await connectToTenantDB(tenantId);
@@ -130,12 +121,8 @@ const deleteAlbum = async (req, res) => {
 const getAlbum = async (req, res) => {
     try {
       // Step 1: Ensure the user is authenticated
-      if (!req.session || !req.session.token || !req.session.tenantId) {
-        return res.status(401).json({ message: 'Unauthorized. Please log in.' });
-      }
-  
-      const { tenantId } = req.session;
-  
+      const { tenantId } = req.params;
+
       // Step 2: Connect to the tenant's specific database
       const tenantConnection = await connectToTenantDB(tenantId);
       const Album = getAlbumModel(tenantConnection);
@@ -176,13 +163,9 @@ const getAlbum = async (req, res) => {
 
 const addPhotoToAlbum = async (req, res) => {
     try {
-      // Step 1: Ensure the user is authenticated
-      if (!req.session || !req.session.token || !req.session.tenantId) {
-        return res.status(401).json({ message: 'Unauthorized. Please log in.' });
-      }
-  
-      const { tenantId } = req.session;
-  
+     
+      const { tenantId } = req.params;
+
       // Step 2: Connect to the tenant's specific database
       const tenantConnection = await connectToTenantDB(tenantId);
       const Album = getAlbumModel(tenantConnection);
@@ -231,12 +214,8 @@ const addPhotoToAlbum = async (req, res) => {
   const removePhotoFromAlbum = async (req, res) => {
     try {
       // Step 1: Ensure the user is authenticated
-      if (!req.session || !req.session.token || !req.session.tenantId) {
-        return res.status(401).json({ message: 'Unauthorized. Please log in.' });
-      }
-  
-      const { tenantId } = req.session;
-  
+      const { tenantId } = req.params;
+        
       // Step 2: Connect to the tenant's specific database
       const tenantConnection = await connectToTenantDB(tenantId);
       const Album = getAlbumModel(tenantConnection);

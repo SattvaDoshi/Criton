@@ -31,9 +31,15 @@ const emailExistsInTenants = async (email) => {
   }
 };
 const getTenantByEmail = async (email) => {
-  // Search for the tenant in the main tenant database using the email
-  const tenant = await Tenant.findOne({ email });
-  return tenant;
+  try {
+    // Search for the tenant in the main tenant database using the email
+    const tenant = await Tenant.findOne({ email });
+    return tenant;
+  } catch (error) {
+    // Handle any database errors
+    console.error('Error finding tenant:', error);
+    throw error;
+  }
 };
 
 const initializeUserSettings = async (userId, connection) => {

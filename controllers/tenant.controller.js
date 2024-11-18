@@ -11,14 +11,14 @@ const registerTenant = async (req, res) => {
 
   try {
     // Validate input
-    if (!username || !email || !password) {
+    if ( !email || !password) {
       return res.status(400).json({ message: 'Missing required fields' });
     }
 
     // Check if email already exists
     const emailExists = await emailExistsInTenants(email);
     if (emailExists) {
-      return res.status(400).json({ message: 'Email already exists across tenants' });
+      return res.status(400).json({ message: 'Email already exists' });
     }
 
     // Generate unique tenantId
@@ -41,7 +41,7 @@ const registerTenant = async (req, res) => {
     });
     
     const savedUser = await newUser.save()
-
+    
     await initializeUserSettings(savedUser._id, tenantConnection);
 
 
@@ -55,7 +55,7 @@ const registerTenant = async (req, res) => {
     });
     await newTenant.save();
 
-    res.status(201).json({ message: 'Tenant registered successfully', tenantId });
+    res.status(201).json({ message: 'Tenant registered successfully', tenantId, userId: savedUser._id });
   } catch (error) {
     console.error('Failed to register tenant:', error);
     res.status(500).json({ message: 'Server error', error: error.message });
@@ -119,7 +119,7 @@ const loginTenant = async (req, res) => {
       }
 
       // Step 9: Respond with a success message
-      res.status(200).json({ message: 'Login successful', tenantId, token });
+      res.status(200).json({ message: 'Login successful', tenantId, user });
     });
 
   } catch (error) {
@@ -142,29 +142,24 @@ const logoutTenant = (req, res) => {
 
 const getTenant = async (req, res) => {
   try {
-    // Step 1: Ensure the user is authenticated
-    if (!req.session || !req.session.token || !req.session.tenantId) {
-      return res.status(401).json({ message: 'Unauthorized. Please log in.' });
-    }
+    
+    const { tenantId } = req.params;
 
-    const { tenantId } = req.session;
-
-
-    // Step 3: Connect to the tenant's specific database
+    // Step 1: Connect to the tenant's specific database
     const tenantConnection = await connectToTenantDB(tenantId);
     const User = getUserModel(tenantConnection);
 
-    // Step 4: Decode the JWT token to get the userId
+    // Step 2: Decode the JWT token to get the userId
     const decodedToken = jwt.verify(req.session.token, process.env.JWT_SECRET);
     const userId = decodedToken.userId;
 
-    // Step 5: Find the user in the tenant's database
+    // Step 3: Find the user in the tenant's database
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // Step 7: Send the response
+    // Step 4: Send the response
     res.status(200).json({
       message: 'Tenant data retrieved successfully',
       user: user
@@ -183,28 +178,23 @@ const addUserDetails = async (req, res) => {
   try {
     const { companyName, companySize, companyAddress, companyGST, number } = req.body;
 
-    // Step 1: Ensure the user is authenticated
-    if (!req.session || !req.session.token || !req.session.tenantId) {
-      return res.status(401).json({ message: 'Unauthorized. Please log in.' });
-    }
+    const { tenantId } = req.params;
 
-    const { tenantId } = req.session;
-
-    // Step 3: Connect to the tenant's specific database
+    // Step 1: Connect to the tenant's specific database
     const tenantConnection = await connectToTenantDB(tenantId);
     const User = getUserModel(tenantConnection);
 
-    // Step 4: Decode the JWT token to get the userId
-    const decodedToken = jwt.verify(req.session.token, process.env.JWT_SECRET);
-    const userId = decodedToken.userId;
+    // Step 2: get the userId
 
-    // Step 5: Find the user in the tenant's database
+    const {userId} = req.params;
+    
+    // Step 3: Find the user in the tenant's database
     const user = await User.findById(userId);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    // Step 6: Update the user's details
+    // Step 5: Update the user's details
     user.companyName = companyName;
     user.comapnySize = companySize;
     user.comapnyAddress = companyAddress;
@@ -212,7 +202,7 @@ const addUserDetails = async (req, res) => {
     user.number = number;
     await user.save();
 
-    // Step 7: Send the response
+    // Step 6: Send the response
     res.status(200).json({
       message: 'User details retrieved successfully',
       user: user

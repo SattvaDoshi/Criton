@@ -31,11 +31,6 @@ app.use(
     secret: process.env.SESSION_SECRET, 
     resave: false,  // Prevents session from being saved back to the store if it wasn’t modified
     saveUninitialized: false,  // Don’t create a session until something is stored
-    store: MongoStore.create({
-      mongoUrl: process.env.MONGOOSE,  
-      collectionName: 'sessions', 
-      ttl: 24 * 60 * 60,  // 1 day session expiration (TTL: time to live)
-    }),
     cookie: {
       // secure: process.env.NODE_ENV === 'production',  // Ensure secure cookies in production
       maxAge: 1000 * 60 * 60 * 24,  // 1 day session expiration

@@ -3,12 +3,12 @@ import { addPhotoToAlbum, createAlbum, deleteAlbum, getAlbum, getAlbums, removeP
 
 const router = Router();
 
-router.post('/createAlbum',createAlbum)
-router.get('/allAlbums',getAlbums)
-router.get('/getAlbum/:albumId',getAlbum)
-router.delete('/deleteAlbum/:albumId',deleteAlbum)
-router.post('/:albumId/photos/:photoId', addPhotoToAlbum);
-router.delete('/:albumId/photos/:photoId', removePhotoFromAlbum);
+router.post('/createAlbum/:tenantId',createAlbum)
+router.get('/allAlbums/:tenantId',getAlbums)
+router.get('/getAlbum/:tenantId/:albumId',getAlbum)
+router.delete('/deleteAlbum/:tenantId/:albumId',deleteAlbum)
+router.post('/:tenantId/:albumId/photos/:photoId', addPhotoToAlbum);
+router.delete('/:tenantId/:albumId/photos/:photoId', removePhotoFromAlbum);
 
 
 export default router

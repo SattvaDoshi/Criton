@@ -4,12 +4,9 @@ import { getPhotoModel } from '../models/photo.model.js';
 
 const addPhoto = async (req, res) => {
   try {
-    // Step 1: Ensure the user is authenticated
-    if (!req.session || !req.session.token || !req.session.tenantId) {
-      return res.status(401).json({ message: 'Unauthorized. Please log in.' });
-    }
+   
 
-    const { tenantId } = req.session;
+    const { tenantId } = req.params;
 
     // Step 2: Connect to the tenant's specific database
     const tenantConnection = await connectToTenantDB(tenantId);
@@ -73,11 +70,8 @@ const addPhoto = async (req, res) => {
 const getPhoto = async (req, res) => {
   try {
     // Step 1: Ensure the user is authenticated
-    if (!req.session || !req.session.token || !req.session.tenantId) {
-      return res.status(401).json({ message: 'Unauthorized. Please log in.' });
-    }
 
-    const { tenantId } = req.session;
+    const { tenantId } = req.params;
 
     // Step 2: Connect to the tenant's specific database
     const tenantConnection = await connectToTenantDB(tenantId);
@@ -115,11 +109,9 @@ const getPhoto = async (req, res) => {
 const getPhotos = async (req, res) => {
   try {
     // Step 1: Ensure the user is authenticated
-    if (!req.session || !req.session.token || !req.session.tenantId) {
-      return res.status(401).json({ message: 'Unauthorized. Please log in.' });
-    }
+   
 
-    const { tenantId } = req.session;
+    const { tenantId } = req.params;
 
     // Step 2: Connect to the tenant's specific database
     const tenantConnection = await connectToTenantDB(tenantId);
@@ -150,11 +142,9 @@ const getPhotos = async (req, res) => {
 const deletePhoto = async (req, res) => {
   try {
     // Step 1: Ensure the user is authenticated
-    if (!req.session || !req.session.token || !req.session.tenantId) {
-      return res.status(401).json({ message: 'Unauthorized. Please log in.' });
-    }
+   
 
-    const { tenantId } = req.session;
+    const { tenantId } = req.params;
 
     // Step 2: Connect to the tenant's specific database
     const tenantConnection = await connectToTenantDB(tenantId);
