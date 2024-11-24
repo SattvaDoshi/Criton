@@ -7,11 +7,8 @@ const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: async (req, file) => {
     // Ensure that tenantId and userId are available in the request
-    if (!req.session || !req.session.tenantId ) {
-      throw new Error('Unauthorized: Missing tenant or user information');
-    }
 
-    const { tenantId } = req.session;
+    const { tenantId } = req.params;
     
     return {
       folder: `tenants/${tenantId}`,

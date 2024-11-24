@@ -5,22 +5,16 @@ import { getPhotoModel } from '../models/photo.model.js';
 const addPhoto = async (req, res) => {
   try {
    
-
-    const { tenantId } = req.params;
+    const { tenantId,userId } = req.params;
 
     // Step 2: Connect to the tenant's specific database
     const tenantConnection = await connectToTenantDB(tenantId);
     const Photo = getPhotoModel(tenantConnection);
 
-    // Step 3: Decode the JWT token to get the userId
-    const decodedToken = jwt.verify(req.session.token, process.env.JWT_SECRET);
-    const userId = decodedToken.userId;
-
-    // Store userId in session for Multer to use
-    req.session.userId = userId;
+    
 
     // Step 4: Check if files are uploaded
-    if (!req.files || (!req.files['photoUrl1'] && !req.files['photoUrl2'])) {
+    if (!req.files || (!req.files['photoUrl1'] || !req.files['photoUrl2'])) {
       return res.status(400).json({ message: 'No files uploaded' });
     }
 
