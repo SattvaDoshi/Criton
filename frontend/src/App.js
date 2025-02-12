@@ -4,7 +4,6 @@ import { BrowserRouter, Route, Routes, Navigate, Router } from "react-router-dom
 import Login from "./pages/auth/Login";
 import Signin from "./pages/auth/Signin";
 import { UserProvider } from "./context/UserContext";
-import AlbumView from "./pages/AlbumView";
 import AdminDashbaord from "./pages/admin/AdminDashbaord";
 import EditAdmin from "./components/admin/EditAdmin";
 import ApproveAdmin from "./components/admin/ApproveAdmin";
@@ -41,10 +40,6 @@ function App() {
               path="/*"
               element={
                 <div className="flex flex-row">
-                  {/* Sticky Navbar on the left */}
-                  <div className="sticky top-0 left-0 w-[280px]">
-                    <Navbar />
-                  </div>
 
                   {/* Routing components on the right */}
                   <div className="flex-1">
